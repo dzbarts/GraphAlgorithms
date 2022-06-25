@@ -3,4 +3,4 @@ project(GraphAlgorithms C)
 
 set(CMAKE_C_STANDARD 23)
 
-add_executable(GraphAlgorithms main.c)
+add_executable(GraphAlgorithms main.c mgraph.cpp)

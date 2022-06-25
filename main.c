@@ -173,4 +173,22 @@ void del_vertex(graph *g, unsigned int number){
     }
 }
 
+void print_graph(graph *g){
+    graph *current=g;
+    if(current->is_empty){
+        printf("Graph is empty");
+        return;
+    }
+    while(current){
+        printf("number = %d, status=%d vertexes={" ,current->number, current->status);
+        adj_list *list=current->vertexes;
+        while(list){
 
+            printf("(to =%d, distance=%.2f), ",list->vertex.number, list->vertex.distance);
+            list=list->next;
+        }
+        printf("}\n");
+        current=current->next;
+    }
+
+}
