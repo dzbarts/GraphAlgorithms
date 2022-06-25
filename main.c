@@ -193,6 +193,61 @@ void print_graph(graph *g){
 
 }
 
+void zero_status(graph *g){
+    graph *current=g;
+    while (current){
+        current->status=0;
+        current=current->next;
+    }
+}
+
+graph *get_vertex(graph *g, unsigned int number){
+    graph *current=g;
+    while(current&&current->number!=number) current=current->next;
+    return current;
+}
+
+void DFS(graph *g, int number){
+    graph *start=get_vertex(g,number);
+    adj_list *current;
+    if (!start->status){
+        start->status=1;
+        printf("%d ",start->number);
+        current=start->vertexes;
+        while(current){
+            DFS(g,current->vertex.number);
+            current=current->next;
+        }
+    }
+    else return;
+}
+
+void BFS(graph *g, int number){
+    graph *start=get_vertex(g,number);
+    adj_list *current;
+    if (!start->status) {
+        start->status = 1;
+        printf("%d ", start->number);
+    }
+    current=start->vertexes;
+    while(current){
+        unsigned int n=current->vertex.number;
+        graph *address=get_vertex(g,n);
+        if(!address->status){
+            printf("%d ",n);
+            address->status=1;
+        }
+        current=current->next;
+    }
+    current=start->vertexes;
+    while(current){
+        unsigned int n=current->vertex.number;
+        BFS(g,n);
+        current=current->next;
+    }
+
+}
+
 typedef struct mgraph{
     int n;
     int *address;
