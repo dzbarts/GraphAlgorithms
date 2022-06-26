@@ -120,9 +120,8 @@ void add_edge(graph *g, unsigned int from, unsigned int to, double distance){
 
         new_g->vertexes=add(new_g->vertexes, pair0);
         current->next=new_g;
-        return;
     }
-    current->vertexes=add(current->vertexes,pair0);
+    else current->vertexes=add(current->vertexes,pair0);
     current=g;
     while(current->number!=to&&current->next) current=current->next;
     if (current->number!=to){
@@ -134,6 +133,7 @@ void add_edge(graph *g, unsigned int from, unsigned int to, double distance){
         return;
     }
 }
+
 
 //функция удаления ребра из графа
 void del_edge(graph *g, unsigned int from, unsigned int to){
@@ -192,11 +192,11 @@ void print_graph(graph *g){
         return;
     }
     while(current){
-        printf("number = %d, status=%d vertexes={" ,current->number, current->status);
+        printf("number = %d, status=%d, vertexes={" ,current->number, current->status);
         adj_list *list=current->vertexes;
         while(list){
-
-            printf("(to =%d, distance=%.2f), ",list->vertex.number, list->vertex.distance);
+            printf("(to =%d, distance=%.2f)",list->vertex.number, list->vertex.distance);
+            if(list->next) printf(", ");
             list=list->next;
         }
         printf("}\n");
@@ -426,3 +426,5 @@ stack *euler_path(mgraph *g){
     free(l);
     return c;
 }
+
+
