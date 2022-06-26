@@ -94,3 +94,62 @@ double *Belman_Ford(graph *g, int vertex){
     return res;
 }
 
+void top_sort(graph *g, graph *start, int *res, int *n){
+    if(start->status) return;
+    start->status=1;
+    adj_list *list=start->vertexes;
+    graph *current;
+    while(list){
+        current= get_vertex(g,list->vertex.number);
+        if(!(current->status)){
+            top_sort(g,current,res,n);
+        }
+        list=list->next;
+    }
+    res[*n]=start->number;
+    *n=*n-1;
+}
+
+graph *Topological_Sort(graph *g){
+    graph *current=g;
+    int *n= malloc(sizeof(int));
+    *n=0;
+    while(current){
+        *n=*n+1;
+        current=current->next;
+    }
+    current=g;
+    int *res= malloc(*n * sizeof(int));
+    *n=*n-1;
+    int k=*n;
+    while(current){
+        top_sort(g,current,res,n);
+        current=current->next;
+    }
+    free(n);
+    int i;
+    graph *elem= malloc(sizeof(graph));
+    graph *old;
+    old= get_vertex(g,res[0]);
+    elem->is_empty=old->is_empty;
+    elem->number=old->number;
+    elem->status=old->status;
+    elem->vertexes=old->vertexes;
+    graph *ng=elem;
+    graph *new_graph=elem;
+    for(i=1;i<=k;i++){
+        elem= malloc(sizeof(graph));
+        old= get_vertex(g,res[i]);
+        elem->is_empty=old->is_empty;
+        elem->number=old->number;
+        elem->status=old->status;
+        elem->vertexes=old->vertexes;
+        ng->next=elem;
+        ng=ng->next;
+    }
+    ng->next=NULL;
+    free(res);
+    zero_status(new_graph);
+    return new_graph;
+}
+
