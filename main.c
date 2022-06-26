@@ -304,3 +304,39 @@ void print_gr(mgraph *g){
         }
     }
 }
+
+typedef struct stack{
+    int n;
+    int address[100];
+}stack;
+
+stack *create(){
+    stack *s= malloc(sizeof(stack));
+    s->n=0;
+}
+
+int push(stack *s, int value){
+    int n=s->n;
+    *(s->address+n)=value;
+    s->n=n+1;
+    return value;
+}
+
+int pop(stack *s){
+    int n=s->n;
+    if(!n) return -1;
+    int value=*(s->address+n-1);
+    s->n=n-1;
+    return value;
+}
+
+void print_stack(stack *s){
+    int i;
+    int n=s->n;
+    if(!n){
+        printf("stack is empty");
+        return;
+    }
+    int *add=s->address;
+    for(i=0;i<n;i++) printf("%d ",add[i]);
+}
