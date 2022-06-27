@@ -214,3 +214,24 @@ int RBTree()
 
     return 0;
 }
+
+
+#include <limits.h>
+#include <stdbool.h>
+
+// Количество вершин в графе
+#define V 9
+
+// Вспомогательная функция для поиска вершины с минимальным значением расстояния из набора вершин,
+// еще не включенных в дерево кратчайших путей.
+int minDistance(int dist[], bool sptSet[])
+{
+    // Инициализация минимального значения
+    int min = INT_MAX, min_index;
+
+    for (int v = 0; v < V; v++)
+        if (sptSet[v] == false && dist[v] <= min)
+            min = dist[v], min_index = v;
+
+    return min_index;
+}
