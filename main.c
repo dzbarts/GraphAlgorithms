@@ -171,3 +171,13 @@ void fixup(struct node* root, struct node* pt)
 
     root->c = 0;
 }
+
+// Функция для печати неупорядоченного обхода сбалансированного дерева
+void inorder(struct node* trav)
+{
+    if (trav == NULL)
+        return;
+    inorder(trav->l);
+    printf("%d ", trav->d);
+    inorder(trav->r);
+}
