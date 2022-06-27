@@ -235,3 +235,11 @@ int minDistance(int dist[], bool sptSet[])
 
     return min_index;
 }
+
+// Вспомогательная функция для печати построенного массива расстояний
+void printSolution(int dist[])
+{
+    printf("Vertex \t\t Distance from Source\n");
+    for (int i = 0; i < V; i++)
+        printf("%d \t\t %d\n", i, dist[i]);
+}
