@@ -13,3 +13,26 @@ struct node {
 // глобальный корень
 struct node* root = NULL;
 
+// функция для вствки бинарного дерева поиска
+struct node* bst(struct node* trav,
+                 struct node* temp)
+{
+    // если дерево пустое, возвращает новое звено
+    if (trav == NULL)
+        return temp;
+
+    // иначе спускается по дереву вниз
+    if (temp->d < trav->d)
+    {
+        trav->l = bst(trav->l, temp);
+        trav->l->p = trav;
+    }
+    else if (temp->d > trav->d)
+    {
+        trav->r = bst(trav->r, temp);
+        trav->r->p = trav;
+    }
+
+    // Возвращает указатель узла
+    return trav;
+}
