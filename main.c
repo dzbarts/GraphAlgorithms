@@ -301,3 +301,37 @@ int Dijkstra()
 
     return 0;
 }
+
+
+
+int main() {
+
+
+    char answer[100000];
+
+    while (atoi(answer) != 7)
+    {
+        printf("Input number of action:\n");
+        printf("    1) RBTree\n");
+        printf("    2) Dijkstra\n");
+
+
+        scanf("%s",answer);
+
+
+        switch (atoi(answer))
+        {
+            case 1:
+                RBTree();
+                printf("\n######################:\n");
+                break;
+            case 2:
+                Dijkstra();
+                printf("\n######################:\n");
+                break;
+        }
+
+    }
+
+    return 0;
+}
