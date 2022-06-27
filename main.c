@@ -851,6 +851,7 @@ int main() {
     while (atoi(answer) != 7)
     {
         printf("Input number of action:\n");
+        printf("    0) To exit\n");
         printf("    1) RBTree\n");
         printf("    2) Dijkstra\n");
 
@@ -860,6 +861,8 @@ int main() {
 
         switch (atoi(answer))
         {
+            case 0:
+                return 0;
             case 1:
                 RBTree();
                 printf("\n######################:\n");
