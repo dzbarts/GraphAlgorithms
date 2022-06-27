@@ -181,3 +181,36 @@ void inorder(struct node* trav)
     printf("%d ", trav->d);
     inorder(trav->r);
 }
+
+// итоговая функция
+int RBTree()
+{
+    int n = 7;
+    int a[7] = { 7, 5, 20, 4, 117, 2, 22 };
+
+    for (int i = 0; i < n; i++) {
+
+        // выделение памяти и инициализация
+        // 1. по умолчанию увет красный
+        // 2. родители и указатели NULL
+        // 3. вес берется соответственно из массива
+        struct node* temp
+                = (struct node*)malloc(sizeof(struct node));
+        temp->r = NULL;
+        temp->l = NULL;
+        temp->p = NULL;
+        temp->d = a[i];
+        temp->c = 1;
+
+        // создание дерева
+        root = bst(root, temp);
+
+        // балансировка
+        fixup(root, temp);
+    }
+
+    printf("Упорядоченное сбалансированное дерево\n");
+    inorder(root);
+
+    return 0;
+}
