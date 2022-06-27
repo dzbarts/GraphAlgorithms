@@ -36,3 +36,39 @@ struct node* bst(struct node* trav,
     // Возвращает указатель узла
     return trav;
 }
+
+// функция разворота по часовой
+void rightrotate(struct node* temp)
+{
+    struct node* left = temp->l;
+    temp->l = left->r;
+    if (temp->l)
+        temp->l->p = temp;
+    left->p = temp->p;
+    if (!temp->p)
+        root = left;
+    else if (temp == temp->p->l)
+        temp->p->l = left;
+    else
+        temp->p->r = left;
+    left->r = temp;
+    temp->p = left;
+}
+
+// функция для разворота против часовой
+void leftrotate(struct node* temp)
+{
+    struct node* right = temp->r;
+    temp->r = right->l;
+    if (temp->r)
+        temp->r->p = temp;
+    right->p = temp->p;
+    if (!temp->p)
+        root = right;
+    else if (temp == temp->p->l)
+        temp->p->l = right;
+    else
+        temp->p->r = right;
+    right->l = temp;
+    temp->p = right;
+}
