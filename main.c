@@ -166,7 +166,8 @@ void del_vertex(graph *g, unsigned int number){
         prev=g->next;
         g->next=g->next->next;
         free(prev);
-        while(current->next){
+        current=g;
+        while(current){
             current->vertexes=del(current->vertexes,number);
             current=current->next;
         }
@@ -181,7 +182,7 @@ void del_vertex(graph *g, unsigned int number){
     del_list(current->vertexes);
     free(current);
     current=g;
-    while(current->next){
+    while(current){
         current->vertexes=del(current->vertexes,number);
         current=current->next;
     }
@@ -401,7 +402,6 @@ double *Belman_Ford(graph *g, int vertex){
         list2=NULL;
         while(list){
             curr=list->vertex.number;
-            printf("%d ",curr);
             current = get_vertex(g, curr)->vertexes;
             while(current){
                 number=current->vertex.number;
@@ -416,7 +416,6 @@ double *Belman_Ford(graph *g, int vertex){
             list=list->next;
         }
         list=list2;
-        printf("\n");
     }
     return res;
 }
