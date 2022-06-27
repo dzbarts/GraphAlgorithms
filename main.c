@@ -72,3 +72,102 @@ void leftrotate(struct node* temp)
     right->l = temp;
     temp->p = right;
 }
+
+// балансировка
+void fixup(struct node* root, struct node* pt)
+{
+    struct node* parent_pt = NULL;
+    struct node* grand_parent_pt = NULL;
+
+    while ((pt != root) && (pt->c != 0)
+           && (pt->p->c == 1))
+    {
+        parent_pt = pt->p;
+        grand_parent_pt = pt->p->p;
+
+        /* Case : A
+            родитель - левый ребенок грендов */
+        if (parent_pt == grand_parent_pt->l)
+        {
+
+            struct node* uncle_pt = grand_parent_pt->r;
+
+            /* Case : 1
+                дядя - красный
+                необходимо лишь перекрасить
+            */
+            if (uncle_pt != NULL && uncle_pt->c == 1)
+            {
+                grand_parent_pt->c = 1;
+                parent_pt->c = 0;
+                uncle_pt->c = 0;
+                pt = grand_parent_pt;
+            }
+
+            else {
+
+                /* Case : 2
+                    родитель - правый ребенок грендов
+                    необходим поворот против часовой
+                 */
+                if (pt == parent_pt->r) {
+                    leftrotate(parent_pt);
+                    pt = parent_pt;
+                    parent_pt = pt->p;
+                }
+
+                /* Case : 3
+                    родитель - левый ребенок грендов
+                    необходим поворот по часовой
+                 */
+                rightrotate(grand_parent_pt);
+                int t = parent_pt->c;
+                parent_pt->c = grand_parent_pt->c;
+                grand_parent_pt->c = t;
+                pt = parent_pt;
+            }
+        }
+
+            /* Case : B
+                родитель - правый ребенок грендов
+                */
+        else {
+            struct node* uncle_pt = grand_parent_pt->l;
+
+            /* Case : 1
+                дядя - красный
+                необходимо лишь перекрасить
+                */
+            if ((uncle_pt != NULL) && (uncle_pt->c == 1))
+            {
+                grand_parent_pt->c = 1;
+                parent_pt->c = 0;
+                uncle_pt->c = 0;
+                pt = grand_parent_pt;
+            }
+            else {
+                /* Case : 2
+                    родитель - левый ребенок грендов
+                    необходим поворот по часовой
+                 */
+                if (pt == parent_pt->l) {
+                    rightrotate(parent_pt);
+                    pt = parent_pt;
+                    parent_pt = pt->p;
+                }
+
+                /* Case : 3
+                    родитель - правый ребенок грендов
+                    необходим поворот против часовой
+                 */
+                leftrotate(grand_parent_pt);
+                int t = parent_pt->c;
+                parent_pt->c = grand_parent_pt->c;
+                grand_parent_pt->c = t;
+                pt = parent_pt;
+            }
+        }
+    }
+
+    root->c = 0;
+}
