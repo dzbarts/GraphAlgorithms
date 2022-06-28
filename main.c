@@ -1040,6 +1040,7 @@ int main() {
                 printf("\n");
                 if(t!=1) printf("Wrong input\n");
                 else DFS(g,n);
+                zero_status(g);
                 printf("\n");
                 break;
             case 9:
@@ -1048,6 +1049,7 @@ int main() {
                 printf("\n");
                 if(t!=1) printf("Wrong input\n");
                 else BFS(g,n);
+                zero_status(g);
                 printf("\n");
                 break;
             case 10:
