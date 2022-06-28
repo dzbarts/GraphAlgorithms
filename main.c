@@ -539,8 +539,7 @@ stack *euler_path(mgraph *g){
     else{
         mgraph *gr=g;
         int i=0;
-        int f=1;
-        while(power(g,f)%2==0){
+        while(power(g,i)%2==0){
             i++;
         }
         start=i;
@@ -945,6 +944,8 @@ int main() {
     char status;
     double distance;
     char answer[100000];
+
+
 
     while (atoi(answer) != 7)
     {
