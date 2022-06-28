@@ -853,6 +853,82 @@ int Dijkstra()
 }
 
 
+#define V 4
+
+#define INF 99999
+
+void Solution(int dist[][V]);
+
+void floydWarshall (int graph[][V])
+{
+    /* dist[][] будет выходной матрицей которая будет
+      иметь кратчайшие расстояния между каждой парой вершин
+    */
+    int dist[V][V], i, j, k;
+
+    /* Инициализация матрицы решения так же,
+     * как матрицы входного графа. Или мы можем сказать,
+     * что начальные значения кратчайших расстояний основаны
+     * на кратчайших путях без учета промежуточных вершин. */
+    for (i = 0; i < V; i++)
+        for (j = 0; j < V; j++)
+            dist[i][j] = graph[i][j];
+
+    /* Добавляем все вершины одну за другой в набор промежуточных вершин.
+     ---> Перед началом итерации у нас есть кратчайшие
+     расстояния между всеми парами вершин, такие, что
+     кратчайшие расстояния рассматривают только вершины в
+     множестве {0, 1, 2, .. k-1} как промежуточные вершины.
+     ----> После окончания итерации вершина k добавляется
+     к множеству промежуточных вершин, и множество становится {0, 1, 2, .. k} */
+    for (k = 0; k < V; k++)
+    {
+        for (i = 0; i < V; i++)
+        {
+            for (j = 0; j < V; j++)
+            {
+                // Если вершина k находится на кратчайшем
+                // пути из i в j, то обновляем значение dist[i][j]
+                if (dist[i][k] + dist[k][j] < dist[i][j])
+                    dist[i][j] = dist[i][k] + dist[k][j];
+            }
+        }
+    }
+
+    printSolution(dist);
+}
+
+void Solution(int dist[][V])
+{
+    printf ("The following matrix shows the shortest distances"
+            " between every pair of vertices \n");
+    for (int i = 0; i < V; i++)
+    {
+        for (int j = 0; j < V; j++)
+        {
+            if (dist[i][j] == INF)
+                printf("%7s", "INF");
+            else
+                printf ("%7d", dist[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+// тест
+int Floyd_Warshall()
+{
+    int graph[V][V] = { {0, 5, INF, 10},
+                        {INF, 0, 3, INF},
+                        {INF, INF, 0, 1},
+                        {INF, INF, INF, 0}
+    };
+
+    floydWarshall(graph);
+    return 0;
+}
+
+
 
 int main() {
     graph *gr;
@@ -873,7 +949,8 @@ int main() {
     while (atoi(answer) != 7)
     {
         printf("Input number of action:\n");
-        printf("    0) To exit\n");
+        printf("    -1) To exit\n");
+        printf("    0) Floyd_Warshall\n");
         printf("    1) RBTree\n");
         printf("    2) Dijkstra\n");
         printf("    3) Create list graph\n");
@@ -896,8 +973,12 @@ int main() {
 
         switch (atoi(answer))
         {
-            case 0:
+            case -1:
                 return 0;
+            case 0:
+                Floyd_Warshall();
+                printf("\n######################:\n");
+                break;
             case 1:
                 RBTree();
                 printf("\n######################:\n");
