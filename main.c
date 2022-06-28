@@ -1040,6 +1040,7 @@ int main() {
                 printf("\n");
                 if(t!=1) printf("Wrong input\n");
                 else DFS(g,n);
+                printf("\n");
                 break;
             case 9:
                 printf("Enter vertex number:\n");
@@ -1047,6 +1048,7 @@ int main() {
                 printf("\n");
                 if(t!=1) printf("Wrong input\n");
                 else BFS(g,n);
+                printf("\n");
                 break;
             case 10:
                 gr= Topological_Sort(g);
