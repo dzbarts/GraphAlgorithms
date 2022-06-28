@@ -228,8 +228,8 @@ graph *get_vertex(graph *g, unsigned int number){
 
 //структура графа в виде матрицы инцидентности
 typedef struct mgraph{
-    int n;
-    int *address;
+    int n;//количество вершин в графе
+    int *address;//ссылка на двумерный массив
 }mgraph;
 
 //функция инициализации графа
@@ -348,29 +348,41 @@ void DFS(graph *g, int number){
 
 //алгоритм поиска в ширину в графе
 void BFS(graph *g, int number){
-    graph *start=get_vertex(g,number);
-    adj_list *current;
-    if (!start->status) {
-        start->status = 1;
-        printf("%d ", start->number);
-    }
-    current=start->vertexes;
-    while(current){
-        unsigned int n=current->vertex.number;
-        graph *address=get_vertex(g,n);
-        if(!address->status){
-            printf("%d ",n);
-            address->status=1;
+    adj_list *list2=NULL;
+    pair p;
+    p.number=number;
+    p.distance=0;
+    list2=add(list2,p);
+    adj_list *list1=list2;
+    adj_list *list, *l;
+    graph *start= get_vertex(g,number);
+    graph *current;
+    int curr, status, num;
+    int t=1;
+    while(list1&&t){
+        t=0;
+        list2=NULL;
+        list=list1;
+        while(list){
+            curr=list->vertex.number;
+            current= get_vertex(g,curr);
+            status=current->status;
+            if (!status){
+                t=1;
+                current->status=1;
+                printf("%d ",curr);
+                l=current->vertexes;
+                while(l){
+                    num=l->vertex.number;
+                    p.number=num;
+                    list2=add(list2,p);
+                    l=l->next;
+                }
+            }
+            list=list->next;
         }
-        current=current->next;
+        list1=list2;
     }
-    current=start->vertexes;
-    while(current){
-        unsigned int n=current->vertex.number;
-        BFS(g,n);
-        current=current->next;
-    }
-
 }
 
 //алгоритм Белмана-Форда
@@ -843,8 +855,19 @@ int Dijkstra()
 
 
 int main() {
-
-
+    graph *gr;
+    graph *g=NULL;
+    mgraph *mg=NULL;
+    stack *s;
+    double *res;
+    int i;
+    int t;
+    int n;
+    double m;
+    int from;
+    int to;
+    char status;
+    double distance;
     char answer[100000];
 
     while (atoi(answer) != 7)
@@ -853,8 +876,21 @@ int main() {
         printf("    0) To exit\n");
         printf("    1) RBTree\n");
         printf("    2) Dijkstra\n");
-
-
+        printf("    3) Create list graph\n");
+        printf("    4) Add vertex to list graph\n");
+        printf("    5) Add edge to list graph\n");
+        printf("    6) Delete edge from list graph\n");
+        printf("    7) Delete vertex from list graph\n");
+        printf("    8) DFS\n");
+        printf("    9) BFS\n");
+        printf("    10) Topological Sort\n");
+        printf("    11) Bellman-Ford\n");
+        printf("    12) Create matrix graph\n");
+        printf("    13) Add edge to matrix graph\n");
+        printf("    14) Delete edge from matrix graph\n");
+        printf("    15) Euler's path\n");
+        printf("    16) Print list graph\n");
+        printf("    17) Print matrix graph\n");
         scanf("%s",answer);
 
 
@@ -870,6 +906,135 @@ int main() {
                 Dijkstra();
                 printf("\n######################:\n");
                 break;
+            case 3:
+                if(!g){
+                    g=init();
+                    printf("Graph(list) has successfully been created\n");
+                }
+                else printf("Graph(list) has already been initialized\n");
+                break;
+            case 4:
+                printf("Enter vertex number and its status:\n");
+                t = scanf("%d %d", &n,&i);
+                printf("\n");
+                if(t!=2) printf("Wrong input\n");
+                else{
+                    add_vertex(g,n,i);
+                    printf("Vertex has successfully been added\n");
+                }
+                break;
+            case 5:
+                printf("Enter 2 vertex numbers and distance between them:\n");
+                t = scanf("%d %d %lf", &n,&i,&m);
+                printf("\n");
+                if(t!=3) printf("Wrong input\n");
+                else{
+                    add_edge(g,n,i,m);
+                    printf("Edge has successfully been added\n");
+                }
+                break;
+            case 6:
+                printf("Enter 2 vertex numbers:\n");
+                t = scanf("%d %d", &n,&i);
+                printf("\n");
+                if(t!=2) printf("Wrong input\n");
+                else{
+                    del_edge(g,n,i);
+                    printf("Edge has successfully been deleted\n");
+                }
+                break;
+            case 7:
+                printf("Enter vertex number:\n");
+                t = scanf("%d %d", &n);
+                printf("\n");
+                if(t!=1) printf("Wrong input\n");
+                else{
+                    del_vertex(g,n);
+                    printf("Vertex has successfully been deleted\n");
+                }
+                break;
+            case 8:
+                printf("Enter vertex number:\n");
+                t = scanf("%d", &n);
+                printf("\n");
+                if(t!=1) printf("Wrong input\n");
+                else DFS(g,n);
+                break;
+            case 9:
+                printf("Enter vertex number:\n");
+                t = scanf("%d", &n);
+                printf("\n");
+                if(t!=1) printf("Wrong input\n");
+                else BFS(g,n);
+                break;
+            case 10:
+                gr= Topological_Sort(g);
+                print_graph(gr);
+                break;
+            case 11:
+                printf("Enter vertex number:\n");
+                t = scanf("%d", &n);
+                printf("\n");
+                if(t!=1) printf("Wrong input\n");
+                res= Belman_Ford(g,n);
+                gr =g;
+                i=0;
+                printf("distances from vertex number %d to other vertexes:\n",n);
+                while(gr){
+                    printf("distance to vertex number %d equals %0.2f\n",i,res[i]);
+                    i++;
+                    gr=gr->next;
+                }
+                break;
+            case 12:
+                if(!mg) {
+                    printf("Enter number of vertexes in graph(matrix):\n");
+                    t = scanf("%d", &n);
+                    printf("\n");
+                    if(t!=1) {
+                        printf("Wrong input\n");
+                        continue;
+                    }
+                    mg=minit(n);
+                    printf("Graph(matrix) has successfully been created\n");
+                }
+                else printf("Graph(matrix) has already been initialized\n");
+                break;
+            case 13:
+                printf("Enter 2 vertex numbers:\n");
+                t = scanf("%d %d", &n,&i);
+                printf("\n");
+                if(t!=2) printf("Wrong input\n");
+                else{
+                    madd_edge(mg,n,i);
+                    printf("Edge has successfully been added\n");
+                }
+                break;
+            case 14:
+                printf("Enter 2 vertex numbers:\n");
+                t = scanf("%d %d", &n,&i);
+                printf("\n");
+                if(t!=2) printf("Wrong input\n");
+                else{
+                    mdel_edge(mg,n,i);
+                    printf("Edge has successfully been deleted\n");
+                }
+                break;
+            case 15:
+                s= euler_path(mg);
+                print_stack(s);
+                printf("\n");
+                break;
+            case 16:
+                print_graph(g);
+                printf("\n");
+                break;
+            case 17:
+                print_gr(mg);
+                printf("\n");
+                break;
+            default:
+                continue;
         }
 
     }
